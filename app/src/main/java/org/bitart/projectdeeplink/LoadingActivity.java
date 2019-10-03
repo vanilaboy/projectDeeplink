@@ -25,12 +25,18 @@ public class LoadingActivity extends AppCompatActivity {
         Uri targetUri = AppLinks.getTargetUrlFromInboundIntent(this, getIntent());
 
 
-
-        if(targetUri != null) {
-            String urlFromDeeplink = targetUri.toString().split("!")[1];
-            startActivity(WebViewActivity.newIntent(this, urlFromDeeplink));
+        if (targetUri != null) {
+            try {
+                String urlFromDeeplink = targetUri.toString().split("!")[1];
+                startActivity(WebViewActivity.newIntent(this, urlFromDeeplink));
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Parse error", Toast.LENGTH_SHORT).show();
+                startActivity(DummyActivity.newIntent(this));
+            }
         } else {
             startActivity(DummyActivity.newIntent(this));
         }
+
     }
 }
